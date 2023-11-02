@@ -13,8 +13,9 @@ import Utils.Config;
 public class MandyTree implements BTree {
     //Tree specific parameters here
     private double MIN_FILL_FACTOR = 0.5;
-    private int DEGREE = 8;
+    private static int DEGREE = 8;
     private Node root = null;
+    private LeafNode firstLeaf;
 
     //some internal statistics for debugging
     private int totalNode = 0;
@@ -25,40 +26,59 @@ public class MandyTree implements BTree {
     //my constructor
     public MandyTree(double MIN_FILL_FACTOR, int DEGREE) {
         root = null;
+        firstLeaf = null;
         this.MIN_FILL_FACTOR = MIN_FILL_FACTOR;
         this.DEGREE = DEGREE;
     }
 
+    private boolean isEmpty(){
+        return firstLeaf == null;
+    }
+
     private static abstract class Node {
         //fill in your implementation about Node in common here
-        int numOfKeys;
-        List<Integer> keys;
+        int maxDegree = DEGREE;
+        int minDegree = (int)Math.ceil(maxDegree/2.0);
 
-        Node() {
-            this.keys = new ArrayList<>();
-        }
+
     }
 
     //LeafNode
     private static class LeafNode extends Node {
         //fill in your implementation specific about LeafNode here
-        List<Integer> values;  // Assuming values are integer for this example
-        LeafNode next;  // Points to the next leaf node
-
-        LeafNode() {
-            this.values = new ArrayList<>();
-        }
 
     }
 
     //IndexNode
     private static class IndexNode extends Node {
         //fill in your implementation specific about IndexNode here
-        List<Node> children;
+        IndexNode left;
+        IndexNode right;
 
-        IndexNode() {
-            this.children = new ArrayList<>();
+        int degree;
+
+        Integer[] keys;
+
+        Node[] childPointers;
+
+        private void appendChildPointer(Node pointer){
+            this.childPointers[degree] = pointer;
+            this.degree++;
         }
+
+        private int findIndexOfPointer(Node pointer){
+            for (int i = 0; i < childPointers.length; i++) {
+                if (childPointers[i] == pointer)
+                    return i;
+            }
+            return -1;
+        }
+
+
+        private void insertChildPointer(Node pointer, int index){
+
+        }
+
     }
     /**
      * Insert key to tree
