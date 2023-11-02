@@ -65,9 +65,6 @@ public class MandyTree implements BTree {
      * @param key
      */
     public void insert(Integer key) {
-        if (root == null) {
-
-        }
 
     }
 
