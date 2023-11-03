@@ -31,6 +31,11 @@ public class MandyTree implements BTree {
         this.DEGREE = DEGREE;
     }
 
+    /**
+     * This method to check first leafNode create or not,
+     * seems to check root is null or not
+     * @return firstLeaf == null
+     */
     private boolean isEmpty(){
         return firstLeaf == null;
     }
@@ -77,7 +82,7 @@ public class MandyTree implements BTree {
     }
 
     /**
-     * LeafNode class
+     * Private LeafNode Class
      */
     private static class LeafNode extends Node {
         //fill in your implementation specific about LeafNode here
@@ -166,7 +171,7 @@ public class MandyTree implements BTree {
     }
 
     /**
-     * IndexNode class
+     * Private IndexNode Class
      */
     private static class IndexNode extends Node {
         //fill in your implementation specific about IndexNode here
