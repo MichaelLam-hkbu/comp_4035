@@ -77,7 +77,7 @@ public class MandyTree implements BTree {
     }
 
     /**
-     * LeafNode
+     * LeafNode class
      */
     private static class LeafNode extends Node {
         //fill in your implementation specific about LeafNode here
@@ -128,13 +128,6 @@ public class MandyTree implements BTree {
         }
 
         /**
-         * This simple method determines if the LeafNode is deficient, i.e.
-         * the numPairs within the LeafNode object is below minNumPairs.
-         * @return a boolean indicating whether or not the LeafNode is deficient
-         */
-        public boolean isDeficient() { return numPairs < minNumPairs; }
-
-        /**
          * This simple method determines if the LeafNode is full, i.e. the
          * numPairs within the LeafNode is equal to the maximum number of pairs.
          * @return a boolean indicating whether or not the LeafNode is full
@@ -142,14 +135,11 @@ public class MandyTree implements BTree {
         public boolean isFull() { return numPairs == maxNumPairs; }
 
         /**
-         * This simple method determines if the LeafNode object is capable of
-         * lending a dictionary pair to a deficient leaf node. The LeafNode
-         * object can lend a dictionary pair if its numPairs is greater than
-         * the minimum number of pairs it can hold.
+         * This method is to check the leaf node should split ir not.
          * @return a boolean indicating whether or not the LeafNode object can
          * give a dictionary pair to a deficient leaf node
          */
-        public boolean isLendable() { return numPairs > minNumPairs; }
+        public boolean isSplit() { return numPairs > minNumPairs; }
 
         /**
          * This simple method determines if the LeafNode object is capable of
@@ -175,7 +165,9 @@ public class MandyTree implements BTree {
         }
     }
 
-    //IndexNode
+    /**
+     * IndexNode class
+     */
     private static class IndexNode extends Node {
         //fill in your implementation specific about IndexNode here
         IndexNode left;
@@ -187,11 +179,19 @@ public class MandyTree implements BTree {
 
         Node[] childPointers;
 
+
+        /**
+         * This method is to append the node pointers when new one data entry
+         */
         private void appendChildPointer(Node pointer){
             this.childPointers[degree] = pointer;
             this.degree++;
         }
 
+        /**
+         * This method is find correct pointer to index node
+         * @return if can find the correct pointer retrun i, else return -1
+         */
         private int findIndexOfPointer(Node pointer){
             for (int i = 0; i < childPointers.length; i++) {
                 if (childPointers[i] == pointer)
