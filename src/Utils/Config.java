@@ -9,6 +9,10 @@ public class Config {
     public static String updatesFileName = "/Users/augenstern/IdeaProjects/comp_4035/src/data/updates.txt";
     public static String queriesFileName = "/Users/augenstern/IdeaProjects/comp_4035/src/data/queries.txt";
 
+    public static String dataFileName_W = "src/data/data.txt";
+    public static String updatesFileName_W = "src/data/updates.txt";
+    public static String queriesFileName_W = "src/data/queries.txt";
+
     public static int count = 10000;
     public static int maxNumber = 100000;
     public static double percents = 0.9;

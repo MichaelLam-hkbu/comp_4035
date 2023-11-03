@@ -43,10 +43,136 @@ public class MandyTree implements BTree {
 
     }
 
-    //LeafNode
+    /**
+     * This class represents a dictionary pair that is to be contained within the
+     * leaf nodes of the B+ tree. The class implements the Comparable interface
+     * so that the DictionaryPair objects can be sorted later on.
+     */
+    public class DictionaryPair implements Comparable<DictionaryPair> {
+        int key;
+        double value;
+
+        /**
+         * Constructor
+         * @param key: the key of the key-value pair
+         * @param value: the value of the key-value pair
+         */
+        public DictionaryPair(int key, double value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        /**
+         * This is a method that allows comparisons to take place between
+         * DictionaryPair objects in order to sort them later on
+         * @param o
+         * @return
+         */
+        @Override
+        public int compareTo(DictionaryPair o) {
+            if (key == o.key) { return 0; }
+            else if (key > o.key) { return 1; }
+            else { return -1; }
+        }
+    }
+
+    /**
+     * LeafNode
+     */
     private static class LeafNode extends Node {
         //fill in your implementation specific about LeafNode here
+        int maxNumPairs;
+        int minNumPairs;
+        int numPairs;
+        LeafNode leftSibling;
+        LeafNode rightSibling;
+        DictionaryPair[] dictionary;
 
+        /**
+         * Given an index, this method sets the dictionary pair at that index
+         * within the dictionary to null.
+         * @param index: the location within the dictionary to be set to null
+         */
+        public void delete(int index) {
+
+            // Delete dictionary pair from leaf
+            this.dictionary[index] = null;
+
+            // Decrement numPairs
+            numPairs--;
+        }
+
+        /**
+         * This method attempts to insert a dictionary pair within the dictionary
+         * of the LeafNode object. If it succeeds, numPairs increments, the
+         * dictionary is sorted, and the boolean true is returned. If the method
+         * fails, the boolean false is returned.
+         * @param dp: the dictionary pair to be inserted
+         * @return a boolean indicating whether or not the insert was successful
+         */
+        public boolean insert(DictionaryPair dp) {
+            if (this.isFull()) {
+
+                /* Flow of execution goes here when numPairs == maxNumPairs */
+
+                return false;
+            } else {
+
+                // Insert dictionary pair, increment numPairs, sort dictionary
+                this.dictionary[numPairs] = dp;
+                numPairs++;
+                Arrays.sort(this.dictionary, 0, numPairs);
+
+                return true;
+            }
+        }
+
+        /**
+         * This simple method determines if the LeafNode is deficient, i.e.
+         * the numPairs within the LeafNode object is below minNumPairs.
+         * @return a boolean indicating whether or not the LeafNode is deficient
+         */
+        public boolean isDeficient() { return numPairs < minNumPairs; }
+
+        /**
+         * This simple method determines if the LeafNode is full, i.e. the
+         * numPairs within the LeafNode is equal to the maximum number of pairs.
+         * @return a boolean indicating whether or not the LeafNode is full
+         */
+        public boolean isFull() { return numPairs == maxNumPairs; }
+
+        /**
+         * This simple method determines if the LeafNode object is capable of
+         * lending a dictionary pair to a deficient leaf node. The LeafNode
+         * object can lend a dictionary pair if its numPairs is greater than
+         * the minimum number of pairs it can hold.
+         * @return a boolean indicating whether or not the LeafNode object can
+         * give a dictionary pair to a deficient leaf node
+         */
+        public boolean isLendable() { return numPairs > minNumPairs; }
+
+        /**
+         * This simple method determines if the LeafNode object is capable of
+         * being merged with, which occurs when the number of pairs within the
+         * LeafNode object is equal to the minimum number of pairs it can hold.
+         * @return a boolean indicating whether or not the LeafNode object can
+         * be merged with
+         */
+        public boolean isMergeable() {
+            return numPairs == minNumPairs;
+        }
+
+        /**
+         * Constructor
+         * @param dp: first dictionary pair insert into new node
+         */
+        public LeafNode(DictionaryPair dp) {
+            this.maxNumPairs = DEGREE;
+            this.minNumPairs = (int)(Math.ceil(DEGREE/2) - 1);
+            this.dictionary = new DictionaryPair[DEGREE];
+            this.numPairs = 0;
+            this.insert(dp);
+        }
     }
 
     //IndexNode
