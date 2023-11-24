@@ -10,7 +10,7 @@ import Utils.Config;
 public class MandyTree implements BTree {
     //Tree specific parameters here
     private double MIN_FILL_FACTOR = 0.5;
-    private static int DEGREE = 4;
+    private static int DEGREE = 8;
     private InternalNode root = null;
 
     private LeafNode firstLeaf = null;
@@ -633,7 +633,7 @@ public class MandyTree implements BTree {
     
     public static void main(String[] args) {
         //we hardcode the fill factor and degree for this project
-        BTree mandyTree = new MandyTree(0.5, 4);
+        BTree mandyTree = new MandyTree(0.5, 8);
         //the value is stored in Config.java
         //build a mandyTree from the data file
         mandyTree.load(Config.dataFileName);
