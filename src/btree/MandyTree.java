@@ -224,8 +224,8 @@ public class MandyTree implements BTree {
 
         // Constructor for initializing a leaf node with a single key-value pair.
         public LeafNode(int m, DictionaryPair dp) {
-            this.maxNumPairs = m - 1; // As per B+ tree properties, a leaf node can hold up to m-1 key-value pairs.
-            this.minNumPairs = (int) (Math.ceil(m / 2) - 1); // Minimum pairs required after deletion to avoid underflow.
+            this.maxNumPairs = m ; // As per B+ tree properties, a leaf node can hold up to m-1 key-value pairs.
+            this.minNumPairs = (int) (Math.ceil(m / 2)); // Minimum pairs required after deletion to avoid underflow.
             this.dictionary = new DictionaryPair[m]; // Initialize the dictionary array.
             this.numPairs = 0; // Initially, the number of pairs is zero.
             this.insert(dp); // Insert the provided key-value pair.
@@ -233,8 +233,8 @@ public class MandyTree implements BTree {
 
         // Constructor for initializing a leaf node with a set of key-value pairs and a parent node.
         public LeafNode(int m, DictionaryPair[] dps, InternalNode parent) {
-            this.maxNumPairs = m - 1; // Maximum number of pairs that can be stored.
-            this.minNumPairs = (int) (Math.ceil(m / 2) - 1); // Minimum pairs required to maintain the tree properties.
+            this.maxNumPairs = m ; // Maximum number of pairs that can be stored.
+            this.minNumPairs = (int) (Math.ceil(m / 2)); // Minimum pairs required to maintain the tree properties.
             this.dictionary = dps; // Initialize the dictionary with the provided array.
             this.numPairs = linearNullSearch(dps); // Determine the number of pairs currently in the dictionary.
             this.parent = parent; // Set the parent of the leaf node.
@@ -323,7 +323,7 @@ public class MandyTree implements BTree {
     // Get the midpoint of a node
     private int getMidpoint() {
         // Calculate the midpoint. For a node of order 'm', it is ceil((m+1)/2) - 1
-        return (int) Math.ceil((DEGREE + 1) / 2.0) - 1;
+        return (int) Math.ceil((DEGREE + 1) / 2.0) -1 ;
     }
 
 
@@ -449,10 +449,6 @@ public class MandyTree implements BTree {
 
             if (!ln.insert(new DictionaryPair(key, key))) {
 
-                ln.dictionary[ln.numPairs] = new DictionaryPair(key, key);
-                ln.numPairs++;
-                sortDictionary(ln.dictionary);
-
                 int midpoint = getMidpoint();
                 DictionaryPair[] halfDict = splitDictionary(ln, midpoint);
 
@@ -470,6 +466,8 @@ public class MandyTree implements BTree {
                     Arrays.sort(ln.parent.keys, 0, ln.parent.degree);
                 }
 
+
+                halfDict[midpoint] = new DictionaryPair(key,key);
                 LeafNode newLeafNode = new LeafNode(DEGREE, halfDict, ln.parent);
 
                 int pointerIndex = ln.parent.findIndexOfPointer(ln) + 1;
@@ -481,6 +479,10 @@ public class MandyTree implements BTree {
                 }
                 ln.rightSibling = newLeafNode;
                 newLeafNode.leftSibling = ln;
+
+//                ln.dictionary[ln.numPairs] = new DictionaryPair(key, key);
+//                ln.numPairs++;
+                sortDictionary(ln.dictionary);
 
                 if (this.root == null) {
 
@@ -499,6 +501,7 @@ public class MandyTree implements BTree {
                 }
             }
         }
+
     }
 
     /**
@@ -636,11 +639,16 @@ public class MandyTree implements BTree {
         BTree mandyTree = new MandyTree(0.5, 8);
         //the value is stored in Config.java
         //build a mandyTree from the data file
-        mandyTree.load(Config.dataFileName);
+//        mandyTree.load(Config.dataFileName);
 
         //interact with the tree via a text interface.
-        CLI.shell(mandyTree);
+//        CLI.shell(mandyTree);
 
+        for (int i = 1; i <=16; i++) {
+            mandyTree.insert(i);
+        }
+
+        mandyTree.printTree();
 
     }
 }
